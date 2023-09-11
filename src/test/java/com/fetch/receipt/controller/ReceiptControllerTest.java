@@ -1,6 +1,7 @@
 package com.fetch.receipt.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,6 +65,28 @@ public class ReceiptControllerTest {
 				.content(mapToJson(receipt)))
 				.andReturn();
 		assertEquals(201,result.getResponse().getStatus());
+	
+		
+	}
+	
+	@Test
+	public void getPointsRecipe() throws Exception {
+		MvcResult result = (MvcResult) mockMvc.perform(get("/receipt/c10c6756-2771-47b6-9874-5bb564a69be7/points")
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andReturn();
+		assertEquals(200,result.getResponse().getStatus());
+	
+		
+	}
+	
+	@Test
+	public void getPointsRecipeWhitNotValidId() throws Exception {
+		MvcResult result = (MvcResult) mockMvc.perform(get("/receipt//points")
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andReturn();
+		assertEquals(404,result.getResponse().getStatus());
 	
 		
 	}
