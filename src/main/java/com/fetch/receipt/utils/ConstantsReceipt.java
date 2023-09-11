@@ -2,6 +2,12 @@ package com.fetch.receipt.utils;
 
 public final class ConstantsReceipt {
 	
+	/**
+	 * This class contains the constants to maintain
+	 * the values globally and make it easier to
+	 * change them when any modification is required to them.
+	 */
+	
 	public static final String MESSAGE_LOG_ERROR = "FETCH-Receipt: Failure: {} ";
 	public static final float STRING_LENGTH_MULTIPLY_3 = 0.2f;
 	public static final int ALPHANUMERIC_NAME_RETAILER= 1;

@@ -11,13 +11,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+	
+	/**
+	 * This class configures Swagger to be able to view 
+	 * the details of the endpoints in the path /swagger-ui/index.html#
+	 * @return
+	 */
 
     @Bean
     public Docket receiptApi(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.ant("/receipt/*"))
                 .build();
     }
 

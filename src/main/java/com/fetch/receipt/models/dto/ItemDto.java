@@ -9,7 +9,6 @@ public class ItemDto {
 
 	}
 
-
     private Integer id;
 
     @NotNull
