@@ -6,25 +6,19 @@ import com.fetch.receipt.models.dto.ItemDto;
 import com.fetch.receipt.models.dto.ReceiptDto;
 import com.fetch.receipt.models.response.ReceiptConsultedResponse;
 import com.fetch.receipt.models.response.ReceiptCreatedResponse;
-import com.fetch.receipt.repository.ReceiptRepository;
 import com.fetch.receipt.service.ReceiptServiceImp;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -51,7 +45,7 @@ class ReceiptApplicationTests {
     }
 
     @Test
-    public void getReceiptById(){
+    public void getReceiptById() throws NotFound{
         ReceiptConsultedResponse response = receiptServiceImp.getReceiptById(saved.getId());
         assertNotNull(response);
     }

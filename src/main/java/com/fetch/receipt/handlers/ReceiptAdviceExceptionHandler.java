@@ -6,6 +6,7 @@ import javax.validation.UnexpectedTypeException;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +54,24 @@ public class ReceiptAdviceExceptionHandler {
 		response.put("description", "The receipt is invalid");
 		log.error(marker,ConstantsReceipt.MESSAGE_LOG_ERROR,exception,ReceiptUtils.getCurrentDate());
 		return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+
+	}
+	
+	@ExceptionHandler(value = { NotFound.class })
+	public ResponseEntity<Object> errorField(NotFound exception) {
+		HashMap<String, String> response = new HashMap<String, String>();
+		response.put("description", "No receipt found for that id");
+		log.error(marker,ConstantsReceipt.MESSAGE_LOG_ERROR,exception,ReceiptUtils.getCurrentDate());
+		return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+
+	}
+	
+	@ExceptionHandler(value = { IllegalArgumentException.class })
+	public ResponseEntity<Object> errorField(IllegalArgumentException exception) {
+		HashMap<String, String> response = new HashMap<String, String>();
+		response.put("description", "Invalid id");
+		log.error(marker,ConstantsReceipt.MESSAGE_LOG_ERROR,exception,ReceiptUtils.getCurrentDate());
+		return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
 
 	}
 

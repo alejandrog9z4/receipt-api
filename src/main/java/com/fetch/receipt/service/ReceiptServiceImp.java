@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.LoggerFactory;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,17 +64,19 @@ public class ReceiptServiceImp implements IReceiptService {
 	 * the receipt in the database and know the points 
 	 * obtained for the purchase, it returns an object of type
 	 * ReceiptConsultedResponse
+	 * @throws NotFound 
 	 */
 	@Override
-	public ReceiptConsultedResponse getReceiptById(String uuid) {
+	public ReceiptConsultedResponse getReceiptById(String uuid) throws NotFound {
 		ReceiptConsultedResponse response = new ReceiptConsultedResponse();
 		UUID id = UUID.fromString(uuid);
 		Optional<Receipt> receipt = receiptRepository.findById(id);
 		if (receipt.isPresent()) {
 			response.setPoints(receipt.get().getPoints());
 			return response;
+		}else {
+			throw new NotFound();
 		}
-		return null;
 	}
 		/**
 		 * This method removes alphanumeric characters and 
