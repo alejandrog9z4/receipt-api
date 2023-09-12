@@ -2,6 +2,7 @@ package com.fetch.receipt.service;
 
 import com.fetch.receipt.entities.Item;
 import com.fetch.receipt.entities.Receipt;
+import com.fetch.receipt.exception.ReceiptAdviceException;
 import com.fetch.receipt.models.dto.ItemDto;
 import com.fetch.receipt.models.dto.ReceiptDto;
 import com.fetch.receipt.models.response.ReceiptConsultedResponse;
@@ -18,10 +19,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.LoggerFactory;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class ReceiptServiceImp implements IReceiptService {
@@ -32,9 +34,9 @@ public class ReceiptServiceImp implements IReceiptService {
 	private ReceiptRepository receiptRepository;
 
 	/**
-	 * This method receives an object of type ReceiptDto to perform 
-	 * the corresponding calculations of the points and 
-	 * carry out the saving process in the database
+	 * This method receives an object of type ReceiptDto to perform the
+	 * corresponding calculations of the points and carry out the saving process in
+	 * the database
 	 */
 	@Override
 	public ReceiptCreatedResponse createReceipt(ReceiptDto receiptDto) {
@@ -60,39 +62,38 @@ public class ReceiptServiceImp implements IReceiptService {
 	}
 
 	/**
-	 * This method receives a string to search for 
-	 * the receipt in the database and know the points 
-	 * obtained for the purchase, it returns an object of type
+	 * This method receives a string to search for the receipt in the database and
+	 * know the points obtained for the purchase, it returns an object of type
 	 * ReceiptConsultedResponse
-	 * @throws NotFound 
+	 * 
+	 * @throws NotFound
 	 */
 	@Override
-	public ReceiptConsultedResponse getReceiptById(String uuid) throws NotFound {
-		ReceiptConsultedResponse response = new ReceiptConsultedResponse();
+	public ReceiptConsultedResponse getReceiptById(String uuid) throws ReceiptAdviceException {
 		UUID id = UUID.fromString(uuid);
-		Optional<Receipt> receipt = receiptRepository.findById(id);
-		if (receipt.isPresent()) {
-			response.setPoints(receipt.get().getPoints());
-			return response;
-		}else {
-			throw new NotFound();
+		Optional<Receipt> receiptConsulted = receiptRepository.findById(id);
+		if (receiptConsulted.isPresent()) {
+			return new ReceiptConsultedResponse(receiptConsulted.get().getPoints());
 		}
+		throw new ReceiptAdviceException("No receipt found for that id", 404);
+
 	}
-		/**
-		 * This method removes alphanumeric characters and 
-		 * calculates the number of points based on the length of the string,
-		 * returning an int data type.
-		 * @param String retailer
-		 * @return int
-		 */
+
+	/**
+	 * This method removes alphanumeric characters and calculates the number of
+	 * points based on the length of the string, returning an int data type.
+	 * 
+	 * @param String retailer
+	 * @return int
+	 */
 	private int calculateValueRetailer(String retailer) {
 		return retailer.replaceAll("([^a-zA-z0-9])", "").trim().length() * ConstantsReceipt.ALPHANUMERIC_NAME_RETAILER;
 	}
 
 	/**
-	 * This method receives a string to calculate 
-	 * if the total amount has no cents
+	 * This method receives a string to calculate if the total amount has no cents
 	 * and returns 0 if the total amount has cents.
+	 * 
 	 * @param String total
 	 * @return int
 	 */
@@ -105,9 +106,9 @@ public class ReceiptServiceImp implements IReceiptService {
 	}
 
 	/**
-	 * This method receives a string to validate if the total amount
-	 *  is a multiple of 0.25, it returns 0 if the amount is not
-	 *  a multiple of 0.25
+	 * This method receives a string to validate if the total amount is a multiple
+	 * of 0.25, it returns 0 if the amount is not a multiple of 0.25
+	 * 
 	 * @param String total
 	 * @return int
 	 */
@@ -119,13 +120,12 @@ public class ReceiptServiceImp implements IReceiptService {
 		return 0;
 	}
 
-	
 	/**
-	 * This method receives a list of products to validate
-	 * if the product description is a multiple of 3 and
-	 * thus calculate the points that can be obtained
-	 * for the purchase, returning 0 if no product description
-	 * meets this characteristic.
+	 * This method receives a list of products to validate if the product
+	 * description is a multiple of 3 and thus calculate the points that can be
+	 * obtained for the purchase, returning 0 if no product description meets this
+	 * characteristic.
+	 * 
 	 * @param List<ItemDto> items
 	 * @return int
 	 */
@@ -140,12 +140,12 @@ public class ReceiptServiceImp implements IReceiptService {
 		;
 
 		return points;
-	} 
-	
+	}
+
 	/**
-	 * This method validates if the day you made
-	 * the purchase is odd, it returns a data of 
-	 * type int
+	 * This method validates if the day you made the purchase is odd, it returns a
+	 * data of type int
+	 * 
 	 * @param Strin purchaseDate
 	 * @return
 	 */
@@ -158,10 +158,10 @@ public class ReceiptServiceImp implements IReceiptService {
 		}
 		return 0;
 	}
-	
+
 	/**
-	 * This method validates how many pairs
-	 * there are in total on the receipt
+	 * This method validates how many pairs there are in total on the receipt
+	 * 
 	 * @param List<ItemDto> items
 	 * @return int
 	 */
@@ -170,12 +170,11 @@ public class ReceiptServiceImp implements IReceiptService {
 		int pairsByList = items.size() / 2;
 		return pairsByList * ConstantsReceipt.PAIRS_LIST_ITEMS;
 	}
-	
-	
+
 	/**
-	 * This method helps map the information to
-	 * the Receipt class that will be in charge
-	 * of saving it in the database.
+	 * This method helps map the information to the Receipt class that will be in
+	 * charge of saving it in the database.
+	 * 
 	 * @param receiptDto
 	 * @return Receipt
 	 */
@@ -191,11 +190,11 @@ public class ReceiptServiceImp implements IReceiptService {
 		receipt.setPoints(receiptDto.getPoints());
 		return receipt;
 	}
-	
+
 	/**
-	 * This method helps map the information to
-	 * the Receipt class that will be in charge
-	 * of saving it in the database.
+	 * This method helps map the information to the Receipt class that will be in
+	 * charge of saving it in the database.
+	 * 
 	 * @param List<ItemDto>items
 	 * @return List<Item>
 	 */
@@ -203,10 +202,10 @@ public class ReceiptServiceImp implements IReceiptService {
 	private List<Item> mapperToItemsEntity(List<ItemDto> items) {
 		return items.stream().map(ReceiptServiceImp::itemMapper).collect(Collectors.toList());
 	}
-	
+
 	/**
-	 * This method helps to map the elements
-	 *  of the Items entity
+	 * This method helps to map the elements of the Items entity
+	 * 
 	 * @param ItemDto item
 	 * @return Item
 	 */
@@ -217,6 +216,7 @@ public class ReceiptServiceImp implements IReceiptService {
 
 	/**
 	 * This method verifies if the purchase was made between 2 pm and 4 pm.
+	 * 
 	 * @param purchaseTime
 	 * @return
 	 */

@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.fetch.receipt.exception.ReceiptAdviceException;
 import com.fetch.receipt.utils.ConstantsReceipt;
 import com.fetch.receipt.utils.ReceiptUtils;
 
@@ -57,11 +58,11 @@ public class ReceiptAdviceExceptionHandler {
 
 	}
 	
-	@ExceptionHandler(value = { NotFound.class })
-	public ResponseEntity<Object> errorField(NotFound exception) {
+	@ExceptionHandler(value = { ReceiptAdviceException.class })
+	public ResponseEntity<Object> notFoundId(ReceiptAdviceException exception) {
 		HashMap<String, String> response = new HashMap<String, String>();
-		response.put("description", "No receipt found for that id");
-		log.error(marker,ConstantsReceipt.MESSAGE_LOG_ERROR,exception,ReceiptUtils.getCurrentDate());
+		response.put("description", exception.getMessage());
+		log.error(marker,ConstantsReceipt.MESSAGE_LOG_ERROR,exception.getMessage(),ReceiptUtils.getCurrentDate());
 		return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
 
 	}
@@ -74,6 +75,8 @@ public class ReceiptAdviceExceptionHandler {
 		return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
 
 	}
+	
+
 
 
 }
