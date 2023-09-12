@@ -6,7 +6,7 @@ import com.fetch.receipt.models.dto.ItemDto;
 import com.fetch.receipt.models.dto.ReceiptDto;
 import com.fetch.receipt.models.response.ReceiptConsultedResponse;
 import com.fetch.receipt.models.response.ReceiptCreatedResponse;
-import com.fetch.receipt.service.ReceiptServiceImp;
+import com.fetch.receipt.service.imp.ReceiptServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

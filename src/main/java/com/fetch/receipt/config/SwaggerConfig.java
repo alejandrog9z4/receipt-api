@@ -23,7 +23,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.regex("^\\/receipt/*"))
+                .paths(PathSelectors.regex("/receipt.*"))
                 .build();
     }
 

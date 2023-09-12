@@ -1,4 +1,4 @@
-package com.fetch.receipt.service;
+package com.fetch.receipt.service.imp;
 
 import com.fetch.receipt.entities.Item;
 import com.fetch.receipt.entities.Receipt;
@@ -8,6 +8,7 @@ import com.fetch.receipt.models.dto.ReceiptDto;
 import com.fetch.receipt.models.response.ReceiptConsultedResponse;
 import com.fetch.receipt.models.response.ReceiptCreatedResponse;
 import com.fetch.receipt.repository.ReceiptRepository;
+import com.fetch.receipt.service.IReceiptService;
 import com.fetch.receipt.utils.ConstantsReceipt;
 
 import java.time.LocalTime;
@@ -22,8 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class ReceiptServiceImp implements IReceiptService {
