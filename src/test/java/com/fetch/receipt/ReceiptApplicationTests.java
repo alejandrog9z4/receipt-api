@@ -50,26 +50,6 @@ class ReceiptApplicationTests {
         assertNotNull(response);
     }
 
-    private List<Item> getListItem() {
-        List<Item> list = new ArrayList<>();
-        Item item1 = new Item("Pizza","12.56");
-        Item item2 = new Item("Pizza","12.56");
-        list.add(item1);
-        list.add(item2);
-        return list;
-    }
-
-    private Receipt getReipte() {
-        Receipt receipt = new Receipt();
-        receipt.setCreatedDate(new Date());
-        receipt.setItems(getListItem());
-        receipt.setPurchaseDate("2023-02-25");
-        receipt.setPurchaseTime("13:30");
-        receipt.setRetailer("Walmart");
-        receipt.setTotal("25.12");
-
-        return receipt;
-    }
     private List<ItemDto> getListItemDto() {
         List<ItemDto> list = new ArrayList<>();
         ItemDto item1 = new ItemDto();

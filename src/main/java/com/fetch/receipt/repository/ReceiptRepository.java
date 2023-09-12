@@ -8,6 +8,4 @@ import java.util.UUID;
 
 
 @Repository
-public interface ReceiptRepository extends JpaRepository<Receipt, UUID> {
-
-}
+public interface ReceiptRepository extends JpaRepository<Receipt, UUID> {}
