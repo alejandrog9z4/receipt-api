@@ -1,7 +1,5 @@
 package com.fetch.receipt;
 
-import com.fetch.receipt.entities.Item;
-import com.fetch.receipt.entities.Receipt;
 import com.fetch.receipt.models.dto.ItemDto;
 import com.fetch.receipt.models.dto.ReceiptDto;
 import com.fetch.receipt.models.response.ReceiptConsultedResponse;
@@ -9,18 +7,16 @@ import com.fetch.receipt.models.response.ReceiptCreatedResponse;
 import com.fetch.receipt.service.imp.ReceiptServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 class ReceiptApplicationTests {
 
@@ -45,7 +41,7 @@ class ReceiptApplicationTests {
     }
 
     @Test
-    public void getReceiptById() throws NotFound{
+    public void getReceiptById(){
         ReceiptConsultedResponse response = receiptServiceImp.getReceiptById(saved.getId());
         assertNotNull(response);
     }
